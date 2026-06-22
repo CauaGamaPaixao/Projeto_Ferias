@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<header class="topbar" th:fragment="topbar">
+    <a class="brand" href="/">brasil<span>drop</span></a>
+    <nav class="nav">
+        <a href="/">Produtos</a>
+        <a href="/wishlist">Favoritos</a>
+        <a href="/cart">Carrinho</a>
+    </nav>
+    <form class="search" action="/" method="get">
+        <input type="search" name="q" th:value="${query}" placeholder="Chuteiras, camisas ou marcas">
+        <button type="submit">Buscar</button>
+    </form>
+    <div class="account">
+        <span class="pill" th:text="'Favoritos ' + ${shopping.wishlistCount()}">Favoritos 0</span>
+        <span class="pill" th:text="'Carrinho ' + ${shopping.cartCount()}">Carrinho 0</span>
+        <a th:if="${user == null}" href="/login">Entrar</a>
+        <form th:if="${user != null}" action="/logout" method="post">
+            <button type="submit">Sair</button>
+        </form>
+    </div>
+</header>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento - Brasil Drop</title>
+    <link rel="stylesheet" href="/css/styles.css?v=2">
+</head>
+<body>
+<div th:replace="~{fragments :: topbar}"></div>
+<main class="content checkout-layout">
+    <section class="checkout-form">
+        <h1>Pagamento</h1>
+        <p th:if="${error}" class="alert" th:text="${error}">Erro</p>
+        <form action="/checkout" method="post">
+            <label for="cep">CEP de entrega</label>
+            <input id="cep" name="cep" th:value="${cep}" inputmode="numeric" placeholder="01001000" required>
+
+            <label for="paymentMethod">Forma de pagamento</label>
+            <select id="paymentMethod" name="paymentMethod">
+                <option value="PIX">PIX</option>
+                <option value="CARTAO_CREDITO">Cartao de credito</option>
+                <option value="BOLETO">Boleto</option>
+            </select>
+
+            <button class="primary" type="submit">Simular pagamento</button>
+        </form>
+    </section>
+    <aside class="summary">
+        <h2>Itens</h2>
+        <div class="mini-row" th:each="item : ${items}">
+            <span th:text="${item.quantity + 'x ' + item.product.name}">1x Produto</span>
+            <strong th:text="${#numbers.formatCurrency(item.subtotal())}">R$ 0,00</strong>
+        </div>
+        <div class="summary-line">
+            <span>Total</span>
+            <strong th:text="${#numbers.formatCurrency(total)}">R$ 0,00</strong>
+        </div>
+    </aside>
+</main>
+</body>
+</html>

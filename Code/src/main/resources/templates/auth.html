@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conta - Brasil Drop</title>
+    <link rel="stylesheet" href="/css/styles.css?v=2">
+</head>
+<body class="auth-page">
+<main class="auth-shell">
+    <a class="brand dark" href="/">brasil<span>drop</span></a>
+    <section class="auth-card">
+        <h1 th:text="${mode == 'register'} ? 'Criar conta' : 'Entrar'">Entrar</h1>
+        <p th:if="${error}" class="alert" th:text="${error}">Erro</p>
+
+        <form th:if="${mode == 'login'}" action="/login" method="post">
+            <label for="email">E-mail</label>
+            <input id="email" name="email" type="email" required>
+            <label for="password">Senha</label>
+            <input id="password" name="password" type="password" required>
+            <button class="primary" type="submit">Entrar</button>
+        </form>
+
+        <form th:if="${mode == 'register'}" action="/cadastro" method="post">
+            <label for="name">Nome</label>
+            <input id="name" name="name" type="text" required>
+            <label for="register-email">E-mail</label>
+            <input id="register-email" name="email" type="email" required>
+            <label for="register-password">Senha</label>
+            <input id="register-password" name="password" type="password" minlength="6" required>
+            <button class="primary" type="submit">Criar conta</button>
+        </form>
+
+        <a th:if="${mode == 'login'}" href="/cadastro">Criar uma conta</a>
+        <a th:if="${mode == 'register'}" href="/login">Ja tenho conta</a>
+        <p class="hint">Demo: demo@brasilmarket.com / 123456</p>
+    </section>
+</main>
+</body>
+</html>

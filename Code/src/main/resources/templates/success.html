@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedido confirmado - Brasil Drop</title>
+    <link rel="stylesheet" href="/css/styles.css?v=2">
+</head>
+<body>
+<div th:replace="~{fragments :: topbar}"></div>
+<main class="content success">
+    <h1>Pedido simulado com sucesso</h1>
+    <p th:text="'Codigo: ' + ${order.code}">Codigo</p>
+    <p th:text="'Pagamento: ' + ${order.paymentMethod}">Pagamento</p>
+    <p th:text="'Entrega: ' + ${order.address.logradouro} + ', ' + ${order.address.bairro} + ' - ' + ${order.address.localidade} + '/' + ${order.address.uf}">Endereco</p>
+    <strong th:text="'Total: ' + ${#numbers.formatCurrency(order.total)}">Total</strong>
+    <a class="primary link-button" href="/">Continuar comprando</a>
+</main>
+</body>
+</html>
