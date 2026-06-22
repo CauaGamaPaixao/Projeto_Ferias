@@ -387,25 +387,37 @@ label {
 
 .copa-assistant {
     position: relative;
-    z-index: 30;
+    z-index: 9999;
 }
 
 .copa-launcher {
     position: fixed;
     right: 24px;
     bottom: 24px;
-    width: 62px;
-    min-height: 62px;
-    border-radius: 50%;
+    z-index: 9999;
+    gap: 8px;
+    min-height: 56px;
+    padding: 0 18px;
+    border: 3px solid #fff;
+    border-radius: 999px;
     background: linear-gradient(135deg, var(--green), #064f2b);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.36);
+}
+
+.copa-launcher-icon {
     font-size: 30px;
+}
+
+.copa-launcher-text {
+    font-size: 15px;
+    white-space: nowrap;
 }
 
 .copa-panel {
     position: fixed;
     right: 24px;
     bottom: 96px;
+    z-index: 9999;
     display: grid;
     grid-template-rows: auto auto minmax(220px, 1fr) auto auto;
     width: min(380px, calc(100vw - 32px));
@@ -513,6 +525,13 @@ label {
     .copa-launcher {
         right: 16px;
         bottom: 16px;
+        width: 62px;
+        padding: 0;
+        border-radius: 50%;
+    }
+
+    .copa-launcher-text {
+        display: none;
     }
 
     .copa-panel {
