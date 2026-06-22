@@ -1,13 +1,14 @@
 package br.com.projetoferias.service;
 
 import br.com.projetoferias.model.ProductCategory;
+import br.com.projetoferias.repository.InMemoryProductRepository;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ProductServiceTest {
 
-    private final ProductService productService = new ProductService();
+    private final ProductService productService = new ProductService(new InMemoryProductRepository());
 
     @Test
     void filtersProductsByCategory() {
