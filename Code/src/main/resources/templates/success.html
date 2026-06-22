@@ -16,5 +16,6 @@
     <strong th:text="'Total: ' + ${#numbers.formatCurrency(order.total)}">Total</strong>
     <a class="primary link-button" href="/">Continuar comprando</a>
 </main>
+<div th:replace="~{fragments :: copaAssistant}"></div>
 </body>
 </html>

@@ -34,5 +34,6 @@
         <a class="primary link-button" href="/checkout" th:classappend="${items.isEmpty()} ? ' disabled'">Finalizar compra</a>
     </aside>
 </main>
+<div th:replace="~{fragments :: copaAssistant}"></div>
 </body>
 </html>
