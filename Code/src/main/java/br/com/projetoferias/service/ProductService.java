@@ -2,9 +2,7 @@ package br.com.projetoferias.service;
 
 import br.com.projetoferias.model.Product;
 import br.com.projetoferias.model.ProductCategory;
-import br.com.projetoferias.repository.InMemoryProductRepository;
 import br.com.projetoferias.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +14,6 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public ProductService() {
-        this(new InMemoryProductRepository());
-    }
-
-    @Autowired
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
