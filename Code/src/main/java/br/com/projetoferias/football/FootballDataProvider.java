@@ -8,5 +8,7 @@ public interface FootballDataProvider {
 
     String getBrazilTeamInfo();
 
+    String getBrazilGroupStandings();
+
     List<String> getWorldCupNews();
 }

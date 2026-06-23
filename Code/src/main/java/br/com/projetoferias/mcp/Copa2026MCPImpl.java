@@ -22,7 +22,8 @@ public class Copa2026MCPImpl implements Copa2026MCP {
     @Override
     public String getWorldCupContext() {
         return "Noticias da Copa: " + String.join("; ", footballDataProvider.getWorldCupNews())
-                + ". Proximos jogos do Brasil: " + String.join("; ", footballDataProvider.getNextBrazilMatches()) + ".";
+                + ". Proximo jogo do Brasil: " + String.join("; ", footballDataProvider.getNextBrazilMatches())
+                + ". Tabela do grupo do Brasil: " + footballDataProvider.getBrazilGroupStandings() + ".";
     }
 
     @Override

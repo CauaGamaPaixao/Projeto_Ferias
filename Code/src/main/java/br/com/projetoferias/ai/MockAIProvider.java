@@ -12,7 +12,11 @@ public class MockAIProvider implements AIProvider {
         String question = extractQuestion(prompt).toLowerCase(Locale.ROOT);
 
         if (question.contains("proximo jogo") || question.contains("próximo jogo")) {
-            return "O proximo jogo simulado do Brasil e Brasil x Argentina em 2026-07-10.";
+            return "O proximo jogo do Brasil na Copa e: " + extractContextValue(prompt, "Proximo jogo do Brasil:", ". Tabela do grupo do Brasil:");
+        }
+        if (question.contains("tabela") || question.contains("grupo") || question.contains("posição")
+                || question.contains("posicao") || question.contains("classificação") || question.contains("classificacao")) {
+            return "Na tabela atual, " + extractContextValue(prompt, "Tabela do grupo do Brasil:", "\n\nContexto Brasil:");
         }
         if (question.contains("visitante") || question.contains("fora")) {
             return "A selecao usa camisa azul como uniforme visitante. No catalogo temos a Camisa Brasil Fora Azul.";
@@ -45,5 +49,24 @@ public class MockAIProvider implements AIProvider {
             return prompt;
         }
         return prompt.substring(index + "Pergunta:".length()).trim();
+    }
+
+    private String extractContextValue(String prompt, String startMarker, String endMarker) {
+        int start = prompt.indexOf(startMarker);
+        if (start < 0) {
+            return "nao encontrei essa informacao no contexto disponivel.";
+        }
+
+        int contentStart = start + startMarker.length();
+        int end = prompt.indexOf(endMarker, contentStart);
+        if (end < 0) {
+            end = prompt.length();
+        }
+
+        String value = prompt.substring(contentStart, end).trim();
+        if (value.isBlank()) {
+            return "nao encontrei essa informacao no contexto disponivel.";
+        }
+        return value;
     }
 }
