@@ -14,6 +14,42 @@ O projeto usa Java 17, Spring Boot e Thymeleaf no backend. O frontend foi mantid
 - Checkout com simulacao de pagamento.
 - Consulta de endereco pela API ViaCEP a partir do CEP informado.
 
+
+## Configuracao do Google Gemini
+
+O Copa Assistant usa a API oficial do Google Gemini por HTTP REST. A chave nao fica no codigo-fonte.
+
+### Como gerar a chave
+
+1. Acesse o Google AI Studio: https://aistudio.google.com/app/apikey
+2. Crie uma API key para o Gemini.
+3. Configure a chave como variavel de ambiente `GEMINI_API_KEY`.
+
+### Windows PowerShell
+
+```powershell
+$env:GEMINI_API_KEY="SUA_CHAVE"
+mvn spring-boot:run
+```
+
+### Windows CMD
+
+```bat
+set GEMINI_API_KEY=SUA_CHAVE
+mvn spring-boot:run
+```
+
+### Linux/macOS
+
+```bash
+export GEMINI_API_KEY=SUA_CHAVE
+mvn spring-boot:run
+```
+
+Opcionalmente, altere o modelo com `GEMINI_MODEL`. O valor padrao e `gemini-2.5-flash`.
+
+Se `GEMINI_API_KEY` nao estiver configurada, o endpoint do chat retorna HTTP 500 com uma mensagem amigavel. Se a API estiver indisponivel, o chat responde: `No momento não consegui consultar a IA. Tente novamente em alguns instantes.`
+
 ## Como rodar
 
 ### Pre-requisitos
