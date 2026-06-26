@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<header class="topbar" th:fragment="topbar">
+    <a class="brand" href="/">brasil<span>drop</span></a>
+    <nav class="nav">
+        <a href="/">Produtos</a>
+        <a href="/wishlist">Favoritos</a>
+        <a href="/cart">Carrinho</a>
+    </nav>
+    <form class="search" action="/" method="get">
+        <input type="search" name="q" th:value="${query}" placeholder="Chuteiras, camisas ou marcas">
+        <button type="submit">Buscar</button>
+    </form>
+    <div class="account">
+        <span class="pill" th:text="'Favoritos ' + ${shopping.wishlistCount()}">Favoritos 0</span>
+        <span class="pill" th:text="'Carrinho ' + ${shopping.cartCount()}">Carrinho 0</span>
+        <a th:if="${user == null}" href="/login">Entrar</a>
+        <form th:if="${user != null}" action="/logout" method="post">
+            <button type="submit">Sair</button>
+        </form>
+    </div>
+</header>
+<section class="copa-assistant" th:fragment="copaAssistant">
+    <button class="copa-launcher"
+            type="button"
+            aria-label="Abrir Copa Assistant"
+            aria-expanded="false"
+            data-copa-launcher>
+        <span class="copa-launcher-icon" aria-hidden="true">⚽</span>
+        <span class="copa-launcher-text">Copa Assistant</span>
+    </button>
+
+    <aside class="copa-panel" aria-label="Copa Assistant" hidden data-copa-panel>
+        <div class="copa-panel-header">
+            <strong>Copa Assistant</strong>
+            <button type="button" aria-label="Fechar Copa Assistant" data-copa-close>×</button>
+        </div>
+        <div class="copa-suggestions" aria-label="Sugestoes rapidas">
+            <button type="button" data-copa-suggestion="Próximo jogo do Brasil">Próximo jogo do Brasil</button>
+            <button type="button" data-copa-suggestion="Notícias da Copa">Notícias da Copa</button>
+            <button type="button" data-copa-suggestion="Produtos do Brasil">Produtos do Brasil</button>
+            <button type="button" data-copa-suggestion="Chuteiras recomendadas">Chuteiras recomendadas</button>
+        </div>
+        <div class="copa-messages" data-copa-messages>
+            <div class="copa-message copa-message-assistant">
+                <p>Olá! Sou o Copa Assistant. Pergunte sobre jogos, uniformes ou produtos da Brasildrop.</p>
+                <time>agora</time>
+            </div>
+        </div>
+        <div class="copa-loading" hidden data-copa-loading>Digitando...</div>
+        <form class="copa-form" data-copa-form>
+            <input type="text" maxlength="500" placeholder="Digite sua pergunta" aria-label="Digite sua pergunta" data-copa-input>
+            <button type="submit">Enviar</button>
+        </form>
+    </aside>
+    <script src="/js/copa-assistant.js?v=1" defer></script>
+</section>
+</body>
+</html>

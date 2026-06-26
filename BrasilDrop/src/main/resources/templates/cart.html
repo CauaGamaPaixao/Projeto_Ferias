@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho - Brasil Drop</title>
+    <link rel="stylesheet" href="/css/styles.css?v=3">
+</head>
+<body>
+<div th:replace="~{fragments :: topbar}"></div>
+<main class="content cart-layout">
+    <section>
+        <h1>Carrinho</h1>
+        <p class="empty" th:if="${items.isEmpty()}">Seu carrinho esta vazio.</p>
+        <article class="cart-row" th:each="item : ${items}">
+            <img th:src="${item.product.imageUrl}" th:alt="${item.product.name}">
+            <div>
+                <h2 th:text="${item.product.name}">Produto</h2>
+                <p th:text="${item.quantity + ' unidade(s)'}">1 unidade</p>
+            </div>
+            <strong th:text="${#numbers.formatCurrency(item.subtotal())}">R$ 0,00</strong>
+            <form action="/cart/remove" method="post">
+                <input type="hidden" name="productId" th:value="${item.product.id}">
+                <button type="submit">Remover</button>
+            </form>
+        </article>
+    </section>
+    <aside class="summary">
+        <h2>Resumo</h2>
+        <div class="summary-line">
+            <span>Total</span>
+            <strong th:text="${#numbers.formatCurrency(total)}">R$ 0,00</strong>
+        </div>
+        <a class="primary link-button" href="/checkout" th:classappend="${items.isEmpty()} ? ' disabled'">Finalizar compra</a>
+    </aside>
+</main>
+<div th:replace="~{fragments :: copaAssistant}"></div>
+</body>
+</html>

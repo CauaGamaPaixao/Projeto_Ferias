@@ -1,6 +1,0 @@
-target/
-server.log
-server-error.log
-.idea/
-.vscode/
-*.iml
