@@ -1,0 +1,25 @@
+<header><a class="brand" href="#" (click)="mode='booking';$event.preventDefault()"><span>N&C</span><strong>Navalha & Companhia</strong></a><nav aria-label="Principal"><button [class.active]="mode==='booking'" (click)="mode='booking'">Agendar</button><button [class.active]="mode==='admin'" (click)="mode='admin'">Administração</button></nav></header>
+<main>
+ <section class="hero"><p class="eyebrow">Barbearia de bairro, cuidado de primeira</p><h1>{{mode==='booking'?'Seu horário, sem espera.':'Organize a agenda da equipe.'}}</h1><p>{{mode==='booking'?'Escolha o serviço, o profissional e reserve em poucos passos.':'Cadastre a oferta e proteja os horários indisponíveis.'}}</p></section>
+ <div class="notice success" *ngIf="message" role="status">{{message}}</div><div class="notice error" *ngIf="error" role="alert">{{error}}</div>
+ <ng-container *ngIf="mode==='booking';else admin">
+  <section class="panel"><div class="section-title"><span>01</span><div><h2>Encontre um horário</h2><p>Atendimento das 09:00 às 18:00.</p></div></div>
+   <form [formGroup]="search" (ngSubmit)="findSlots()" class="grid three">
+    <label>Profissional<select formControlName="professionalId"><option [ngValue]="0">Selecione</option><option *ngFor="let p of professionals" [ngValue]="p.id">{{p.name}}</option></select><small *ngIf="search.controls.professionalId.touched&&search.controls.professionalId.invalid">Escolha um profissional.</small></label>
+    <label>Serviço<select formControlName="serviceId"><option [ngValue]="0">Selecione</option><option *ngFor="let s of services" [ngValue]="s.id">{{s.name}} · {{s.durationMinutes}} min · {{s.price|currency:'BRL'}}</option></select><small *ngIf="search.controls.serviceId.touched&&search.controls.serviceId.invalid">Escolha um serviço.</small></label>
+    <label>Data<input type="date" formControlName="date" [min]="minDate"><small *ngIf="search.controls.date.touched&&search.controls.date.invalid">Informe uma data.</small></label>
+    <button class="primary" type="submit" [disabled]="loading">{{loading?'Consultando…':'Ver horários'}}</button>
+   </form>
+   <div class="slots" *ngIf="slots.length"><button type="button" *ngFor="let slot of slots" [class.selected]="booking.value.startAt===slot.startAt" (click)="choose(slot)">{{slot.startAt|date:'HH:mm'}}</button></div>
+   <p class="empty" *ngIf="searched&&!loading&&!slots.length">Nenhum horário disponível nessa data. Tente outro dia.</p>
+  </section>
+  <section class="panel" *ngIf="booking.value.startAt"><div class="section-title"><span>02</span><div><h2>Confirme seus dados</h2><p>Horário escolhido: <strong>{{booking.value.startAt|date:'dd/MM/yyyy HH:mm'}}</strong></p></div></div>
+   <form [formGroup]="booking" (ngSubmit)="reserve()" class="grid two"><label>Nome completo<input formControlName="clientName" autocomplete="name"><small *ngIf="booking.controls.clientName.touched&&booking.controls.clientName.invalid">Informe seu nome.</small></label><label>E-mail<input type="email" formControlName="clientEmail" autocomplete="email"><small *ngIf="booking.controls.clientEmail.touched&&booking.controls.clientEmail.invalid">Informe um e-mail válido.</small></label><button class="primary" type="submit">Confirmar reserva</button></form>
+  </section>
+ </ng-container>
+ <ng-template #admin><div class="admin-grid">
+  <section class="panel"><h2>Novo profissional</h2><form [formGroup]="professional" (ngSubmit)="addProfessional()"><label>Nome<input formControlName="name"><small *ngIf="professional.controls.name.touched&&professional.controls.name.invalid">Nome obrigatório.</small></label><button class="primary" type="submit">Cadastrar</button></form></section>
+  <section class="panel"><h2>Novo serviço</h2><form [formGroup]="service" (ngSubmit)="addService()"><label>Nome<input formControlName="name"></label><div class="grid two"><label>Duração (min)<input type="number" step="15" formControlName="durationMinutes"></label><label>Preço (R$)<input type="number" step="0.01" formControlName="price"></label></div><button class="primary" type="submit">Cadastrar</button></form></section>
+  <section class="panel wide"><h2>Bloquear horário</h2><form [formGroup]="block" (ngSubmit)="addBlock()" class="grid two"><label>Profissional<select formControlName="professionalId"><option [ngValue]="0">Selecione</option><option *ngFor="let p of professionals" [ngValue]="p.id">{{p.name}}</option></select></label><label>Motivo<input formControlName="reason"></label><label>Início<input type="datetime-local" formControlName="startAt"></label><label>Fim<input type="datetime-local" formControlName="endAt"></label><button class="primary" type="submit">Bloquear agenda</button></form></section>
+ </div></ng-template>
+</main><footer>Navalha & Companhia · demonstração de agendamento</footer>

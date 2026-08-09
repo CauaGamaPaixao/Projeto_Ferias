@@ -1,0 +1,4 @@
+interface:
+  display_name: "Modernize Full-Stack Project"
+  short_description: "Plan and execute safe incremental modernization"
+  default_prompt: "Use $modernize-fullstack-project to assess this application and propose a safe incremental modernization plan."

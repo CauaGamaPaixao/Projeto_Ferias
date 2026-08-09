@@ -1,0 +1,4 @@
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule,HttpTestingController } from '@angular/common/http/testing';
+import { BarbershopApiService } from './barbershop-api.service';
+describe('BarbershopApiService',()=>{let service:BarbershopApiService;let http:HttpTestingController;beforeEach(()=>{TestBed.configureTestingModule({imports:[HttpClientTestingModule]});service=TestBed.inject(BarbershopApiService);http=TestBed.inject(HttpTestingController)});afterEach(()=>http.verify());it('consulta disponibilidade com os filtros',()=>{service.availability(1,2,'2030-01-02').subscribe();const req=http.expectOne(r=>r.url==='/api/availability');expect(req.request.params.get('professionalId')).toBe('1');expect(req.request.params.get('serviceId')).toBe('2');req.flush([])});});
