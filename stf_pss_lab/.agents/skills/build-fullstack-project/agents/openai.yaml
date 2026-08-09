@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build Full-Stack Project"
+  short_description: "Turn requirements into a tested web application"
+  default_prompt: "Use $build-fullstack-project to turn my requirements into a working, tested application and explain the key architecture choices."

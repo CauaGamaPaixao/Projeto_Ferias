@@ -1,0 +1,8 @@
+# Copy the server block to ~/.codex/config.toml, or rename this file to
+# .codex/config.toml after trusting the project.
+
+[mcp_servers.context7]
+command = "npx"
+args = ["-y", "@upstash/context7-mcp"]
+startup_timeout_sec = 20
+tool_timeout_sec = 60

@@ -1,0 +1,50 @@
+<main class="market-layout">
+
+  <aside class="sidebar">
+    <div class="filters">
+      <div class="filter-head">
+        <strong>Filtros</strong>
+        <a (click)="clearFilters()" style="cursor:pointer">Limpar</a>
+      </div>
+      <form (submit)="applyFilters(); $event.preventDefault()">
+        <label for="category">Categoria</label>
+        <select id="category" [(ngModel)]="selectedCategory" name="category">
+          <option value="">Todas</option>
+          <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        </select>
+        <button class="primary" type="submit">Aplicar</button>
+      </form>
+    </div>
+  </aside>
+
+  <section class="product-area">
+    <div class="hero-strip">
+      <div>
+        <p>Copa 2026</p>
+        <h1>Chuteiras e artigos esportivos do Brasil</h1>
+      </div>
+    </div>
+
+    <div class="product-grid">
+      <article class="product-card" *ngFor="let product of products">
+        <div class="product-media">
+          <img [src]="product.imageUrl" [alt]="product.name">
+          <button class="favorite" [class.active]="isFavorite(product.id)"
+                  (click)="toggleFavorite(product.id)" type="button">
+            {{ isFavorite(product.id) ? '♥' : '♡' }}
+          </button>
+        </div>
+        <div class="product-info">
+          <p class="brand-name">{{ product.brand }}</p>
+          <h2>{{ product.name }}</h2>
+          <p>{{ product.description }}</p>
+          <div class="product-footer">
+            <strong>{{ formatPrice(product.price) }}</strong>
+            <button type="button" (click)="addToCart(product.id)">Adicionar</button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+</main>

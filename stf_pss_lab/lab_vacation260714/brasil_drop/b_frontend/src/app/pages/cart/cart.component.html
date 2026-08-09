@@ -1,0 +1,23 @@
+<main class="content cart-layout">
+  <section>
+    <h1>Carrinho</h1>
+    <p class="empty" *ngIf="items.length === 0">Seu carrinho esta vazio.</p>
+    <article class="cart-row" *ngFor="let item of items">
+      <img [src]="item.product.imageUrl" [alt]="item.product.name">
+      <div>
+        <h2>{{ item.product.name }}</h2>
+        <p>{{ item.quantity }} unidade(s)</p>
+      </div>
+      <strong>{{ formatPrice(item.subtotal) }}</strong>
+      <button type="button" (click)="remove(item.product.id)">Remover</button>
+    </article>
+  </section>
+  <aside class="summary">
+    <h2>Resumo</h2>
+    <div class="summary-line">
+      <span>Total</span>
+      <strong>{{ formatPrice(total) }}</strong>
+    </div>
+    <a class="primary link-button" routerLink="/checkout" [class.disabled]="items.length === 0">Finalizar compra</a>
+  </aside>
+</main>

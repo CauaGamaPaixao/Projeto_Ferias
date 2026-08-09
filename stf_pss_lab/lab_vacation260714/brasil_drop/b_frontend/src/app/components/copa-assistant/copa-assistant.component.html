@@ -1,0 +1,28 @@
+<section class="copa-assistant">
+  <button class="copa-launcher" type="button" (click)="open()" [attr.aria-expanded]="isOpen">
+    <span class="copa-launcher-icon">⚽</span>
+    <span class="copa-launcher-text">Copa Assistant</span>
+  </button>
+
+  <aside class="copa-panel" [hidden]="!isOpen">
+    <div class="copa-panel-header">
+      <strong>Copa Assistant</strong>
+      <button type="button" (click)="close()" aria-label="Fechar">×</button>
+    </div>
+    <div class="copa-suggestions">
+      <button type="button" *ngFor="let s of suggestions" (click)="sendSuggestion(s)">{{ s }}</button>
+    </div>
+    <div class="copa-messages" #messagesContainer>
+      <div *ngFor="let msg of messages"
+           [class]="'copa-message ' + (msg.sender === 'user' ? 'copa-message-user' : 'copa-message-assistant')">
+        <p>{{ msg.text }}</p>
+        <time>{{ msg.time }}</time>
+      </div>
+    </div>
+    <div class="copa-loading" [hidden]="!isLoading">Digitando...</div>
+    <form class="copa-form" (submit)="onSubmit(); $event.preventDefault()">
+      <input type="text" [(ngModel)]="input" name="message" maxlength="500" placeholder="Digite sua pergunta">
+      <button type="submit" [disabled]="isLoading">Enviar</button>
+    </form>
+  </aside>
+</section>

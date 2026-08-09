@@ -1,0 +1,19 @@
+<main class="content">
+  <h1>Favoritos</h1>
+  <p class="empty" *ngIf="products.length === 0">Nenhum produto favoritado ainda.</p>
+  <div class="product-grid compact">
+    <article class="product-card" *ngFor="let product of products">
+      <div class="product-media">
+        <img [src]="product.imageUrl" [alt]="product.name">
+      </div>
+      <div class="product-info">
+        <p class="brand-name">{{ product.brand }}</p>
+        <h2>{{ product.name }}</h2>
+        <div class="product-footer">
+          <strong>{{ formatPrice(product.price) }}</strong>
+          <button type="button" (click)="addToCart(product.id)">Adicionar</button>
+        </div>
+      </div>
+    </article>
+  </div>
+</main>

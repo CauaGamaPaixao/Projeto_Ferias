@@ -1,0 +1,26 @@
+<main class="content success" *ngIf="order">
+  <h1>Pedido feito com sucesso!</h1>
+
+  <div class="success-section">
+    <h2>Resumo do pedido</h2>
+    <p><strong>Codigo:</strong> {{ order.code }}</p>
+    <p><strong>Forma de pagamento:</strong> {{ paymentLabel }}</p>
+    <p *ngIf="!isInstallment"><strong>Pagamento:</strong> A vista - {{ formatPrice(order.total) }}</p>
+    <p *ngIf="isInstallment">
+      <strong>Parcelamento:</strong>
+      {{ order.installments }}x de {{ formatPrice(installmentValue) }} sem juros
+    </p>
+    <p><strong>Total:</strong> {{ formatPrice(order.total) }}</p>
+  </div>
+
+  <div class="success-section">
+    <h2>Endereço de entrega</h2>
+    <p>{{ order.address.logradouro }}, {{ order.address.numero }}
+       <span *ngIf="order.address.complemento"> - {{ order.address.complemento }}</span>
+    </p>
+    <p>{{ order.address.bairro }}, {{ order.address.localidade }}/{{ order.address.uf }}</p>
+    <p>CEP: {{ order.address.cep }}</p>
+  </div>
+
+  <a class="primary link-button" routerLink="/">Continuar comprando</a>
+</main>

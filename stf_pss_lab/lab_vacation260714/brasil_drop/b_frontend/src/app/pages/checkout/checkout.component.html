@@ -1,0 +1,84 @@
+<main class="content checkout-layout">
+  <section class="checkout-form">
+    <h1>Pagamento</h1>
+    <p class="alert" *ngIf="error">{{ error }}</p>
+    <form (submit)="submit(); $event.preventDefault()">
+
+      <label for="cep">CEP de entrega</label>
+      <input id="cep" [(ngModel)]="cep" name="cep" inputmode="numeric"
+             placeholder="00000-000" (blur)="lookupCep()" maxlength="9" required>
+
+      <ng-container>
+        <label for="rua">Rua / Avenida</label>
+        <input id="rua" [(ngModel)]="rua" name="rua" type="text"
+               placeholder="Rua das Flores" required>
+
+        <div class="checkout-row">
+          <div>
+            <label for="numero">Número</label>
+            <input id="numero" [(ngModel)]="numero" name="numero" type="text"
+                   placeholder="123" required>
+          </div>
+          <div>
+            <label for="complemento">Complemento <span class="hint">(opcional)</span></label>
+            <input id="complemento" [(ngModel)]="complemento" name="complemento"
+                   type="text" placeholder="Apto 42">
+          </div>
+        </div>
+
+        <div class="checkout-row">
+          <div>
+            <label for="bairro">Bairro</label>
+            <input id="bairro" [(ngModel)]="bairro" name="bairro" type="text" readonly>
+          </div>
+          <div>
+            <label for="cidade">Cidade</label>
+            <input id="cidade" [(ngModel)]="cidade" name="cidade" type="text" readonly>
+          </div>
+          <div class="checkout-uf">
+            <label for="uf">UF</label>
+            <input id="uf" [(ngModel)]="uf" name="uf" type="text" readonly>
+          </div>
+        </div>
+      </ng-container>
+
+      <label for="paymentMethod">Forma de pagamento</label>
+      <select id="paymentMethod" [(ngModel)]="paymentMethod" name="paymentMethod"
+              (ngModelChange)="onPaymentMethodChange()">
+        <option value="PIX">PIX</option>
+        <option value="CARTAO_CREDITO">Cartão de crédito</option>
+        <option value="BOLETO">Boleto</option>
+      </select>
+
+      <ng-container *ngIf="showInstallments">
+        <label for="installments">Parcelas</label>
+        <select id="installments" [(ngModel)]="installments" name="installments">
+          <option *ngFor="let n of installmentOptions" [value]="n">
+            {{ n }}x de {{ formatPrice(total / n) }} sem juros
+          </option>
+        </select>
+        <p class="installment-total hint">
+          Total: {{ formatPrice(total) }}
+        </p>
+      </ng-container>
+
+      <button class="primary" type="submit">Realizar pagamento</button>
+    </form>
+  </section>
+
+  <aside class="summary">
+    <h2>Itens</h2>
+    <div class="mini-row" *ngFor="let item of items">
+      <span>{{ item.quantity }}x {{ item.product.name }}</span>
+      <strong>{{ formatPrice(item.subtotal) }}</strong>
+    </div>
+    <div class="summary-line">
+      <span>Total</span>
+      <strong>{{ formatPrice(total) }}</strong>
+    </div>
+    <div class="summary-line" *ngIf="showInstallments && installments > 1">
+      <span>{{ installments }}x sem juros</span>
+      <strong>{{ formatPrice(total / installments) }}/mês</strong>
+    </div>
+  </aside>
+</main>

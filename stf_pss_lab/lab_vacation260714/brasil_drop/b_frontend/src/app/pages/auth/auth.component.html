@@ -1,0 +1,47 @@
+<div class="auth-layout">
+  <main class="auth-panel">
+    <section class="auth-card">
+      <div class="auth-card-header">
+        <a class="brand dark" routerLink="/">brasil<span>drop</span></a>
+        <a class="auth-back" routerLink="/">← Voltar para a loja</a>
+      </div>
+
+      <h1>{{ mode === 'register' ? 'Criar conta' : 'Entrar' }}</h1>
+      <p class="auth-subtitle">{{ mode === 'register' ? 'Preencha seus dados para começar.' : 'Bem-vindo de volta!' }}</p>
+
+      <p class="alert" *ngIf="error">{{ error }}</p>
+
+      <form *ngIf="mode === 'login'" (submit)="login(); $event.preventDefault()">
+        <label for="email">E-mail</label>
+        <input id="email" [(ngModel)]="email" name="email" type="email" placeholder="seu@email.com" required>
+        <label for="password">Senha</label>
+        <input id="password" [(ngModel)]="password" name="password" type="password" placeholder="••••••" required>
+        <button class="primary auth-submit" type="submit">Entrar</button>
+      </form>
+
+      <form *ngIf="mode === 'register'" (submit)="register(); $event.preventDefault()">
+        <label for="name">Nome</label>
+        <input id="name" [(ngModel)]="name" name="name" type="text" placeholder="Seu nome completo" required>
+        <label for="reg-email">E-mail</label>
+        <input id="reg-email" [(ngModel)]="email" name="email" type="email" placeholder="seu@email.com" required>
+        <label for="reg-password">Senha</label>
+        <input id="reg-password" [(ngModel)]="password" name="password" type="password" placeholder="Mínimo 6 caracteres" minlength="6" required>
+        <button class="primary auth-submit" type="submit">Criar conta</button>
+      </form>
+
+      <div class="auth-footer">
+        <a *ngIf="mode === 'login'" routerLink="/cadastro">Não tem conta? <strong>Criar uma conta</strong></a>
+        <a *ngIf="mode === 'register'" routerLink="/login">Já tem conta? <strong>Entrar</strong></a>
+        <p class="hint">Demo: demo&#64;brasilmarket.com / 123456</p>
+      </div>
+    </section>
+  </main>
+
+  <aside class="auth-hero">
+    <div class="auth-hero-overlay">
+      <p class="auth-hero-tag">Copa do Mundo 2026</p>
+      <h2 class="auth-hero-title">Vista as cores do Brasil</h2>
+      <p class="auth-hero-sub">Camisas, chuteiras e acessórios oficiais para torcer com estilo.</p>
+    </div>
+  </aside>
+</div>
