@@ -4,9 +4,9 @@
 
 The reference application lives in `lab_vacation260714/brasil_drop/` and uses a separated frontend and backend architecture.
 
-The frontend lives in `b_frontend/` and uses Angular 17, TypeScript, Angular Router, HttpClient, FormsModule, Jasmine, and Karma.
+The frontend lives in `b_frontend/` and uses Angular 17.3, TypeScript 5.4, Angular Router, HttpClient, FormsModule, Jasmine 5.1, and Karma 6.4.
 
-The backend lives in `c_backend/` and uses Java 21, Spring Boot 3, Maven, REST APIs, JUnit 5, and Mockito.
+The backend lives in `c_backend/` and uses Java 17, Spring Boot 3.3.8, Maven, REST APIs, Bean Validation, JUnit 5, and Mockito.
 
 Its primary user journeys are authentication, product catalog search and filtering, wishlist management, shopping cart, checkout, ViaCEP address lookup, and an optional Gemini-backed assistant.
 
@@ -23,6 +23,8 @@ Ignore generated or installed content such as:
 - `b_frontend/.angular/`
 - `b_frontend/dist/`
 - `c_backend/target/`
+
+When documentation and executable configuration disagree, inspect manifests and build files such as `package.json`, `angular.json`, and `pom.xml`. Treat the executable configuration as the effective technical truth and report the documentation divergence.
 
 ## Patterns worth carrying forward
 
@@ -78,10 +80,11 @@ lab_vacation260714/brasil_drop/b_frontend/
 Use:
 
 ```bash
-npm install
 npm test
 npm run build
 ```
+
+Run `npm install` first only when dependencies are not already installed or when the lockfile changed.
 
 Run backend checks from:
 
@@ -104,7 +107,7 @@ Do not report these checks as successful unless the commands were actually execu
 - Plain-text or demonstration authentication is not production-grade authentication.
 - Session-based shopping state may not satisfy distributed deployment, concurrency, persistence, or scaling requirements.
 - A separated Angular frontend and Spring Boot backend are not automatically the correct architecture for every project.
-- Angular 17 and Java 21 are characteristics of this reference project, not mandatory versions for every generated application.
+- Angular 17.3 and Java 17 are characteristics of this reference project, not mandatory versions for every generated application.
 - Gemini is a product feature in the sample, not part of the project-generation agent itself.
 - ViaCEP is a domain-specific integration and should only be reused when the new project requires Brazilian address lookup.
 - Committed `node_modules/`, `.angular/`, `dist/`, or `target/` content is a repository hygiene problem and must not be reproduced.
