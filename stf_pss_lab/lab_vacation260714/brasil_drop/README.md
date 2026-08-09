@@ -1,113 +1,106 @@
-# BrasilDrop — Projeto de Férias
+# BrasilDrop
 
-Marketplace de artigos esportivos temático para a Copa do Mundo 2026, com assistente de IA integrado ao Google Gemini.
+Marketplace de artigos esportivos temático para a Copa do Mundo 2026, com frontend Angular, API REST Spring Boot e assistente integrado ao Google Gemini.
 
----
+## Estrutura
 
-## Estrutura do projeto
-
+```text
+brasil_drop/
+├── b_frontend/  Aplicação Angular 17
+├── c_backend/   API REST Spring Boot 3.3.8 (Java 17)
+└── a_doc/       Documentação de produto
 ```
-stf_pss_lab/
-├── a_frontend/   → Aplicação Angular 17 (interface do usuário)
-└── b_backend/    → API REST Spring Boot 3 (Java 21)
-```
 
----
+## Runtimes
 
-## Pré-requisitos
-
-| Ferramenta | Versão mínima |
+| Ferramenta | Versão do projeto |
 |---|---|
-| Java | 21 |
-| Maven | 3.9+ |
-| Node.js | 18+ |
-| npm | 9+ |
-| Angular CLI | 17+ (`npm install -g @angular/cli@17`) |
+| Java | 17 |
+| Maven | 3.9.9, fornecido pelo Maven Wrapper |
+| Node.js | 20.19.6 LTS, fixado em `b_frontend/.nvmrc` |
+| npm | 10 ou 11 |
+| Angular | 17.3.x |
+| Spring Boot | 3.3.8 |
 
----
+> Angular 17.3 declara suporte oficial a Node `^18.13.0 || ^20.9.0`; Node 20.19.6 pertence a essa matriz. A linha Node 20 chegou ao fim de vida em abril de 2026, portanto esta pinagem é uma ponte de compatibilidade até a futura atualização incremental do Angular.
 
-## Como rodar
+## Backend
 
-### 1. Backend (c_backend)
+No Windows:
 
 ```powershell
-# Windows PowerShell
 cd c_backend
 $env:GEMINI_API_KEY="sua_chave_aqui"
-mvn spring-boot:run
+.\mvnw.cmd spring-boot:run
 ```
+
+No Linux ou macOS:
 
 ```bash
-# Linux / macOS
 cd c_backend
 export GEMINI_API_KEY="sua_chave_aqui"
-mvn spring-boot:run
+./mvnw spring-boot:run
 ```
 
-O backend sobe em **http://localhost:8080**
+O backend inicia em `http://localhost:8080`. A chave Gemini é opcional para o restante da aplicação; sem ela, o endpoint do Copa Assistant retorna erro de configuração.
 
-> A chave da API Gemini é necessária apenas para o Copa Assistant.
-> Sem ela, o resto da aplicação funciona normalmente.
+## Frontend
 
----
-
-### 2. Frontend (b_frontend)
-
-Em outro terminal:
+Com um gerenciador compatível com `.nvmrc`:
 
 ```bash
 cd b_frontend
-npm install
-ng serve
+nvm use
+npm ci
+npm start
 ```
 
-O frontend sobe em **http://localhost:4200**
+O frontend inicia em `http://localhost:4200` e encaminha `/api/*` para `localhost:8080` pelo `proxy.conf.json`. Não é necessário instalar o Angular CLI globalmente.
 
-> O Angular já está configurado com proxy para o backend (`proxy.conf.json`),
-> então todas as chamadas `/api/*` são redirecionadas automaticamente para `localhost:8080`.
+## Verificações
 
----
-
-## Credenciais de demonstração
-
-```
-E-mail:  demo@brasilmarket.com
-Senha:   123456
+```bash
+cd b_frontend
+npm test -- --watch=false
+npm run build
 ```
 
----
+```powershell
+cd c_backend
+.\mvnw.cmd test
+.\mvnw.cmd package
+```
 
-## Tecnologias utilizadas
+## Configuração Gemini
 
-### Backend
-- Java 21
-- Spring Boot 3 (Spring MVC, Spring Web)
-- API REST (JSON)
-- Google Gemini API (Copa Assistant com Google Search grounding)
-- ViaCEP API (validação de endereço no checkout)
+- `GEMINI_API_KEY`: chave da API, sem valor padrão.
+- O modelo efetivo é `gemini-2.5-flash`, configurado em `c_backend/src/main/resources/application.properties`.
 
-### Frontend
-- Angular 17
-- TypeScript
-- CSS (paleta verde/amarelo — identidade BrasilDrop)
-- Angular Router, HttpClient, FormsModule
+Nunca grave credenciais no repositório.
 
----
+## Conta de demonstração
 
-## Endpoints da API
+```text
+E-mail: demo@brasilmarket.com
+Senha: 123456
+```
+
+Essa credencial existe apenas para demonstração local e não é adequada para produção.
+
+## Endpoints principais
 
 | Método | Endpoint | Descrição |
 |---|---|---|
-| GET | `/api/products` | Lista produtos (params: `q`, `category`) |
-| GET | `/api/products/categories` | Lista categorias disponíveis |
-| GET | `/api/cart` | Itens do carrinho + total |
-| POST | `/api/cart/add` | Adiciona produto ao carrinho |
-| POST | `/api/cart/remove` | Remove produto do carrinho |
+| GET | `/api/products` | Lista produtos; aceita `q` e `category` |
+| GET | `/api/products/categories` | Lista categorias |
+| GET | `/api/cart` | Retorna carrinho e total |
+| POST | `/api/cart/add` | Adiciona produto |
+| POST | `/api/cart/remove` | Remove produto |
 | GET | `/api/wishlist` | Lista favoritos |
-| POST | `/api/wishlist/toggle` | Adiciona/remove dos favoritos |
-| GET | `/api/auth/me` | Usuário da sessão atual |
-| POST | `/api/auth/login` | Login |
-| POST | `/api/auth/register` | Cadastro |
-| POST | `/api/auth/logout` | Logout |
-| POST | `/api/checkout` | Finaliza pedido |
-| POST | `/api/copa-assistant/chat` | Pergunta ao Copa Assistant |
+| POST | `/api/wishlist/toggle` | Alterna favorito |
+| GET | `/api/auth/me` | Retorna o usuário atual |
+| POST | `/api/auth/login` | Autentica usuário |
+| POST | `/api/auth/register` | Cadastra usuário |
+| POST | `/api/auth/logout` | Encerra sessão |
+| POST | `/api/checkout` | Finaliza pedido simulado |
+| POST | `/api/copa-assistant/chat` | Consulta o Copa Assistant |

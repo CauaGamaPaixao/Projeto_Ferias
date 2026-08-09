@@ -1,27 +1,35 @@
-# AFrontend
+# BrasilDrop frontend
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.17.
+Aplicação Angular 17.3 que consome a API REST do diretório `../c_backend`.
 
-## Development server
+## Pré-requisitos
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- Node.js 20.19.6 LTS, fixado em `.nvmrc`.
+- npm 10 ou 11.
 
-## Code scaffolding
+Angular 17.3 declara oficialmente Node `^18.13.0 || ^20.9.0`; Node 20.19.6 pertence a essa matriz. Como a linha Node 20 chegou ao fim de vida em abril de 2026, esta pinagem é uma ponte de compatibilidade até a atualização incremental do Angular. Os builds e testes devem ser executados ao trocar o runtime.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Instalação e execução
 
-## Build
+```bash
+nvm use
+npm ci
+npm start
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+A aplicação abre em `http://localhost:4200`. O servidor de desenvolvimento usa `proxy.conf.json` para encaminhar `/api/*` a `http://localhost:8080`.
 
-## Running unit tests
+Não é necessário instalar o Angular CLI globalmente; os scripts usam a versão local do lockfile.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Testes e build
 
-## Running end-to-end tests
+```bash
+npm test -- --watch=false
+npm run build
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+O build de produção é gravado em `dist/`. Cache Angular, cobertura, dependências instaladas e outputs compilados são ignorados pelo Git.
 
-## Further help
+## Versões efetivas
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+As faixas declaradas estão em `package.json`; as versões resolvidas e reproduzíveis estão em `package-lock.json`. Atualizações de framework devem alterar ambos em uma fase própria.
