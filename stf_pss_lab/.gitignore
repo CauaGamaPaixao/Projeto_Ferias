@@ -236,3 +236,31 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Codex validation applications
+/agent-validation/
+
+# Frontend outputs
+**/node_modules/
+**/dist/
+**/coverage/
+**/.angular/
+**/*.log
+
+# Backend outputs
+**/target/
+
+# Local databases
+**/*.mv.db
+**/*.trace.db
+
+# Environment and secrets
+**/.env
+**/.env.*
+!**/.env.example
+
+# IDE and operating system
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build Frontend"
+  short_description: "Build accessible frontend applications"
+  default_prompt: "Use $build-frontend to implement the selected frontend scope and return a verified handoff."

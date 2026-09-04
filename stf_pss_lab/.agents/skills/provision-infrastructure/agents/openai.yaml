@@ -1,0 +1,4 @@
+interface:
+  display_name: "Provision Infrastructure"
+  short_description: "Design and validate scoped application infrastructure"
+  default_prompt: "Use $provision-infrastructure to design or implement only the explicitly authorized infrastructure scope."

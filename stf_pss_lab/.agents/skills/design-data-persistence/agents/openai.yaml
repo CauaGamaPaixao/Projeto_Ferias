@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design Data Persistence"
+  short_description: "Design proportionate application persistence"
+  default_prompt: "Use $design-data-persistence to design and implement the applicable persistence scope."

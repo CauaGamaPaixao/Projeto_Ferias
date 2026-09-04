@@ -1,0 +1,4 @@
+interface:
+  display_name: "Implement Authentication"
+  short_description: "Implement secure authentication and authorization"
+  default_prompt: "Use $implement-authentication to implement the approved authentication and authorization scope."

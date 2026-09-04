@@ -1,0 +1,4 @@
+interface:
+  display_name: "Test Full-Stack Project"
+  short_description: "Plan and execute application test engineering"
+  default_prompt: "Use $test-fullstack-project to map requirements to tests, execute applicable checks, and report evidence."

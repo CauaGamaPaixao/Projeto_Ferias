@@ -1,0 +1,4 @@
+interface:
+  display_name: "Generate Project Documentation"
+  short_description: "Create tailored project documentation sets"
+  default_prompt: "Use $generate-project-documentation to create a tailored project documentation set from the briefing and actual code."
