@@ -1,0 +1,7 @@
+.receipt-page { max-width: 960px; }
+.receipt-page-heading { margin-bottom: 1.5rem; }
+.receipt-page-heading h1 { margin: .5rem 0; font-size: 1.9rem; }
+.receipt-eyebrow { font-size: .75rem; font-weight: 800; letter-spacing: .08em; color: var(--green); }
+.receipt-actions { display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: center; margin-bottom: 1.5rem; }
+.receipt-actions a { text-decoration: underline; }
+@media print { .receipt-page { max-width: none; margin: 0; padding: 0; } }

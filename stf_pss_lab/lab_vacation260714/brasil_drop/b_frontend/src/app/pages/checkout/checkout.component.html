@@ -62,7 +62,10 @@
         </p>
       </ng-container>
 
-      <button class="primary" type="submit">Realizar pagamento</button>
+      <button class="primary" type="submit" [disabled]="submitting || !items.length">
+        {{ submitting ? 'Confirmando pedido…' : 'Realizar pagamento' }}
+      </button>
+      <a *ngIf="error" routerLink="/pedidos">Consultar meus pedidos</a>
     </form>
   </section>
 

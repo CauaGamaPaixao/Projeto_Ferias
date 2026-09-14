@@ -1,26 +1,23 @@
-<main class="content success" *ngIf="order">
-  <h1>Pedido feito com sucesso!</h1>
-
-  <div class="success-section">
-    <h2>Resumo do pedido</h2>
-    <p><strong>Codigo:</strong> {{ order.code }}</p>
-    <p><strong>Forma de pagamento:</strong> {{ paymentLabel }}</p>
-    <p *ngIf="!isInstallment"><strong>Pagamento:</strong> A vista - {{ formatPrice(order.total) }}</p>
-    <p *ngIf="isInstallment">
-      <strong>Parcelamento:</strong>
-      {{ order.installments }}x de {{ formatPrice(installmentValue) }} sem juros
-    </p>
-    <p><strong>Total:</strong> {{ formatPrice(order.total) }}</p>
-  </div>
-
-  <div class="success-section">
-    <h2>Endereço de entrega</h2>
-    <p>{{ order.address.logradouro }}, {{ order.address.numero }}
-       <span *ngIf="order.address.complemento"> - {{ order.address.complemento }}</span>
-    </p>
-    <p>{{ order.address.bairro }}, {{ order.address.localidade }}/{{ order.address.uf }}</p>
-    <p>CEP: {{ order.address.cep }}</p>
-  </div>
-
-  <a class="primary link-button" routerLink="/">Continuar comprando</a>
+<main class="content receipt-page">
+  <header class="no-print receipt-page-heading">
+    <p class="receipt-eyebrow">BRASIL DROP · MEUS PEDIDOS</p>
+    <h1>Seu comprovante de compra</h1>
+    <p>Consulte os detalhes e imprima uma cópia sempre que precisar.</p>
+  </header>
+  <p *ngIf="loading" role="status" class="no-print">Carregando comprovante…</p>
+  <section *ngIf="error" role="alert" class="alert no-print">
+    <p>{{ error }}</p>
+    <a *ngIf="unauthorized" class="primary link-button" routerLink="/login"
+       [queryParams]="{ returnUrl: returnUrl }">Entrar na minha conta</a>
+    <button *ngIf="!unauthorized" type="button" (click)="retry()">Tentar novamente</button>
+  </section>
+  <ng-container *ngIf="order">
+    <div class="receipt-actions no-print">
+      <button type="button" class="primary" (click)="print()">Imprimir comprovante</button>
+      <a routerLink="/pedidos">Meus pedidos</a>
+      <a routerLink="/">Continuar comprando</a>
+    </div>
+    <app-order-receipt [order]="order"></app-order-receipt>
+  </ng-container>
+  <a *ngIf="!order && !loading" class="no-print" routerLink="/pedidos">Voltar para Meus pedidos</a>
 </main>

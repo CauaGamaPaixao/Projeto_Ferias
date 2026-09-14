@@ -36,9 +36,14 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Map<String, String> body, HttpSession session) {
-        boolean created = userService.register(body.get("name"), body.get("email"), body.get("password"));
+        boolean created;
+        try {
+            created = userService.register(body.get("name"), body.get("email"), body.get("password"));
+        } catch (IllegalArgumentException exception) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Dados de cadastro invalidos."));
+        }
         if (!created) return ResponseEntity.status(409).body(Map.of("error", "Ja existe uma conta com este e-mail."));
-        UserAccount user = new UserAccount(body.get("name"), body.get("email").trim().toLowerCase(), body.get("password"));
+        UserAccount user = userService.authenticate(body.get("email"), body.get("password")).orElseThrow();
         session.setAttribute("user", user);
         return ResponseEntity.ok(Map.of("name", user.name(), "email", user.email()));
     }

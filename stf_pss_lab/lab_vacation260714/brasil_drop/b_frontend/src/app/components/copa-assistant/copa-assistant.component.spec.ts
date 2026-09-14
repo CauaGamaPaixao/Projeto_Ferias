@@ -1,3 +1,7 @@
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CopaAssistantComponent } from './copa-assistant.component';
@@ -8,7 +12,7 @@ describe('CopaAssistantComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CopaAssistantComponent]
+      imports: [CommonModule, FormsModule, HttpClientTestingModule, RouterTestingModule], declarations: [CopaAssistantComponent]
     })
     .compileComponents();
     

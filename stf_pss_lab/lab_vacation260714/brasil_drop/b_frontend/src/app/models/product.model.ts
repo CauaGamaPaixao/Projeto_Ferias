@@ -14,8 +14,19 @@ export interface CartItem {
   subtotal: number;
 }
 
+export interface OrderItem {
+  productId: number;
+  name: string;
+  unitPrice: number;
+  quantity: number;
+  subtotal: number;
+}
+
 export interface Order {
   code: string;
+  buyerName: string;
+  createdAt: string;
+  items: OrderItem[];
   paymentMethod: string;
   total: number;
   installments: number;

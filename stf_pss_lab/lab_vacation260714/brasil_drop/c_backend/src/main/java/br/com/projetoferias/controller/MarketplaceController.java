@@ -7,6 +7,7 @@ import br.com.projetoferias.service.ProductService;
 import br.com.projetoferias.service.ShoppingSessionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.servlet.http.HttpSession;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -44,22 +45,31 @@ public List<Product> products(@RequestParam(required = false) String q,
     }
 
     @GetMapping("/cart")
-    public Map<String, Object> cart() {
-        List<CartItem> items = shoppingSession.cartItems(productService);
-        BigDecimal total = shoppingSession.total(productService);
-        return Map.of("items", items.stream().map(this::toCartDto).toList(), "total", total);
+    public Map<String, Object> cart(HttpSession session) {
+        synchronized (session) {
+            List<CartItem> items = shoppingSession.cartItems(productService);
+            BigDecimal total = shoppingSession.total(productService);
+            return Map.of("items", items.stream().map(this::toCartDto).toList(), "total", total);
+        }
     }
 
     @PostMapping("/cart/add")
-    public ResponseEntity<Void> addToCart(@RequestBody Map<String, Long> body) {
-        shoppingSession.addToCart(body.get("productId"));
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> addToCart(@RequestBody Map<String, Long> body, HttpSession session) {
+        synchronized (session) {
+            if (body.get("productId") == null || productService.findById(body.get("productId")).isEmpty()) {
+                return ResponseEntity.badRequest().build();
+            }
+            shoppingSession.addToCart(body.get("productId"));
+            return ResponseEntity.ok().build();
+        }
     }
 
     @PostMapping("/cart/remove")
-    public ResponseEntity<Void> removeFromCart(@RequestBody Map<String, Long> body) {
-        shoppingSession.removeFromCart(body.get("productId"));
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> removeFromCart(@RequestBody Map<String, Long> body, HttpSession session) {
+        synchronized (session) {
+            shoppingSession.removeFromCart(body.get("productId"));
+            return ResponseEntity.ok().build();
+        }
     }
 
     @GetMapping("/wishlist")

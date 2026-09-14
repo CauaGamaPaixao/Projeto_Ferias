@@ -4,7 +4,7 @@ import { CartService } from '../../services/cart.service';
 import { ViacepService } from '../../services/viacep.service';
 import { ShoppingStateService } from '../../services/shopping-state.service';
 import { HttpClient } from '@angular/common/http';
-import { CartItem } from '../../models/product.model';
+import { CartItem, Order } from '../../models/product.model';
 
 @Component({ selector: 'app-checkout', templateUrl: './checkout.component.html' })
 export class CheckoutComponent implements OnInit {
@@ -21,6 +21,7 @@ export class CheckoutComponent implements OnInit {
   paymentMethod = 'PIX';
   installments = 1;
   error = '';
+  submitting = false;
 
   constructor(
     private cartService: CartService,
@@ -86,9 +87,12 @@ export class CheckoutComponent implements OnInit {
   }
 
   submit(): void {
+    if (this.submitting) return;
     if (!this.cepValido) { this.error = 'Informe um CEP válido.'; return; }
     if (!this.numero.trim()) { this.error = 'Informe o número do endereço.'; return; }
-    this.http.post<any>('/api/checkout', {
+    this.submitting = true;
+    this.error = '';
+    this.http.post<Order>('/api/checkout', {
       cep: this.cep,
       rua: this.rua,
       numero: this.numero,
@@ -98,9 +102,13 @@ export class CheckoutComponent implements OnInit {
     }).subscribe({
       next: order => {
         this.state.refresh();
-        this.router.navigate(['/pedido-confirmado'], { state: { order } });
+        this.router.navigate(['/pedidos', order.code, 'confirmacao']);
       },
-      error: () => { this.error = 'Erro ao finalizar pedido.'; }
+      error: error => {
+        this.submitting = false;
+        this.error = error.status === 401 ? 'Sua sessão expirou. Entre novamente para finalizar.'
+          : 'Não foi possível confirmar a compra. Consulte Meus pedidos antes de tentar novamente.';
+      }
     });
   }
 

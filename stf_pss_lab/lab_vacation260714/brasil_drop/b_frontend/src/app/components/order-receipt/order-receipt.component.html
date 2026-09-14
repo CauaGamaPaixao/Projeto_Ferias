@@ -1,0 +1,48 @@
+<article class="order-receipt" aria-label="Comprovante de compra">
+  <header class="receipt-header">
+    <div>
+      <p class="receipt-brand">brasil<span>drop</span></p>
+      <h2>Comprovante de compra</h2>
+    </div>
+    <strong class="receipt-badge">Documento não fiscal</strong>
+  </header>
+  <div class="receipt-meta">
+    <p><strong>Pedido</strong><span class="receipt-code">{{ order.code }}</span></p>
+    <p><strong>Data da compra</strong><time [attr.datetime]="order.createdAt">{{ dateLabel }} (Brasília)</time></p>
+    <p><strong>Comprador</strong><span>{{ order.buyerName }}</span></p>
+  </div>
+  <table>
+    <caption>Artigos esportivos do pedido</caption>
+    <thead>
+      <tr><th scope="col">Produto</th><th scope="col">Qtd.</th><th scope="col">Valor unitário</th><th scope="col">Subtotal</th></tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of order.items">
+        <td>{{ item.name }}</td><td data-label="Qtd.">{{ item.quantity }}</td>
+        <td data-label="Valor unitário">{{ money(item.unitPrice) }}</td>
+        <td data-label="Subtotal">{{ money(item.subtotal) }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="receipt-totals">
+    <p><span>Subtotal dos produtos</span><span>{{ money(order.total) }}</span></p>
+    <p class="receipt-total"><strong>Total do pedido</strong><strong>{{ money(order.total) }}</strong></p>
+  </div>
+  <div class="receipt-details">
+    <section>
+      <h3>Forma de pagamento</h3>
+      <p>{{ paymentLabel }}</p>
+      <p>{{ order.installments > 1 ? order.installments + ' parcelas sem juros' : 'À vista' }}</p>
+    </section>
+    <section>
+      <h3>Endereço de entrega</h3>
+      <p>{{ order.address.logradouro }}, {{ order.address.numero }}<span *ngIf="order.address.complemento"> — {{ order.address.complemento }}</span></p>
+      <p>{{ order.address.bairro }} · {{ order.address.localidade }}/{{ order.address.uf }}</p>
+      <p>CEP {{ order.address.cep }}</p>
+    </section>
+  </div>
+  <footer>
+    <strong>Documento não fiscal</strong>
+    <p>Resumo de uma compra simulada no Brasil Drop. Não comprova cobrança ou pagamento real e não substitui nota fiscal.</p>
+  </footer>
+</article>

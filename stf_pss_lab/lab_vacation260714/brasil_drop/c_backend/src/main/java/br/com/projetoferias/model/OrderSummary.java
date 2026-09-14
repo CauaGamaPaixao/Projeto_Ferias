@@ -1,16 +1,21 @@
 package br.com.projetoferias.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 public record OrderSummary(
         String code,
-        List<CartItem> items,
+        String ownerEmail,
+        String buyerName,
+        List<OrderItem> items,
         BigDecimal total,
         CheckoutAddress address,
         String paymentMethod,
         int installments,
-        LocalDateTime createdAt
+        OffsetDateTime createdAt
 ) {
+    public OrderSummary {
+        items = List.copyOf(items);
+    }
 }
