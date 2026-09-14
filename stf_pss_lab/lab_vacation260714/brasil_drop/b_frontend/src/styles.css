@@ -991,3 +991,12 @@ label {
         max-height: calc(100vh - 104px);
     }
 }
+.print-only { display: none; }
+@media print {
+    @page { size: A4; margin: 15mm; }
+    html { font-size: 12pt !important; }
+    body { margin: 0 !important; background: #fff !important; color: #000 !important; }
+    app-navbar, app-copa-assistant, .no-print { display: none !important; }
+    .print-only { display: block !important; }
+    .order-receipt, .order-receipt * { color: #000 !important; background: #fff !important; box-shadow: none !important; text-shadow: none !important; }
+}

@@ -6,6 +6,7 @@ import { WishlistComponent } from './pages/wishlist/wishlist.component';
 import { CheckoutComponent } from './pages/checkout/checkout.component';
 import { AuthComponent } from './pages/auth/auth.component';
 import { OrderSuccessComponent } from './pages/order-success/order-success.component';
+import { OrdersComponent } from './pages/orders/orders.component';
 import { authGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -15,7 +16,9 @@ const routes: Routes = [
   { path: 'checkout', component: CheckoutComponent, canActivate: [authGuard] },
   { path: 'login', component: AuthComponent, data: { mode: 'login' } },
   { path: 'cadastro', component: AuthComponent, data: { mode: 'register' } },
-  { path: 'pedido-confirmado', component: OrderSuccessComponent },
+  { path: 'pedidos', component: OrdersComponent },
+  { path: 'pedidos/:code/confirmacao', component: OrderSuccessComponent },
+  { path: 'pedido-confirmado', redirectTo: 'pedidos', pathMatch: 'full' },
   { path: '**', redirectTo: '' }
 ];
 

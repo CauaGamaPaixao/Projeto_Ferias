@@ -1,0 +1,6 @@
+c_backend/target/
+c_backend/data/
+*.mv.db
+*.trace.db
+.env
+qa-output/

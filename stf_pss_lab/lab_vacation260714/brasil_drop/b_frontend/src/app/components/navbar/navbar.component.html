@@ -2,6 +2,7 @@
   <a class="brand" routerLink="/">brasil<span>drop</span></a>
   <nav class="nav">
     <a routerLink="/">Produtos</a>
+    <a routerLink="/pedidos">Meus pedidos</a>
   </nav>
   <form class="search" (submit)="search(); $event.preventDefault()">
     <input type="search" [(ngModel)]="query" name="q" placeholder="Chuteiras, camisas ou marcas">

@@ -1,113 +1,98 @@
-# BrasilDrop — Projeto de Férias
+# Brasil Drop
 
-Marketplace de artigos esportivos temático para a Copa do Mundo 2026, com assistente de IA integrado ao Google Gemini.
+Marketplace esportivo com Angular 17.3 e Spring Boot 3.3.8, checkout simulado, favoritos, acessibilidade de fonte e Copa Assistant.
 
----
+## Estrutura
 
-## Estrutura do projeto
+- `b_frontend/`: interface Angular.
+- `c_backend/`: API Java, usuários e pedidos persistidos.
+- `a_doc/`: requisitos e documentação da integração de comprovantes.
 
-```
-stf_pss_lab/
-├── a_frontend/   → Aplicação Angular 17 (interface do usuário)
-└── b_backend/    → API REST Spring Boot 3 (Java 21)
-```
+## Executar localmente
 
----
+Pré-requisitos: Java 21 (o POM mantém compatibilidade com Java 17), Maven 3.9+, Node compatível com Angular 17 e npm.
+A validação desta entrega utilizou Java 21.0.2 e Node 24.19.0 do ambiente; consulte a matriz oficial de compatibilidade do Angular antes de atualizar runtimes.
 
-## Pré-requisitos
-
-| Ferramenta | Versão mínima |
-|---|---|
-| Java | 21 |
-| Maven | 3.9+ |
-| Node.js | 18+ |
-| npm | 9+ |
-| Angular CLI | 17+ (`npm install -g @angular/cli@17`) |
-
----
-
-## Como rodar
-
-### 1. Backend (c_backend)
+Backend, em um terminal:
 
 ```powershell
-# Windows PowerShell
 cd c_backend
-$env:GEMINI_API_KEY="sua_chave_aqui"
 mvn spring-boot:run
 ```
 
-```bash
-# Linux / macOS
-cd c_backend
-export GEMINI_API_KEY="sua_chave_aqui"
-mvn spring-boot:run
-```
+Frontend, em outro terminal:
 
-O backend sobe em **http://localhost:8080**
-
-> A chave da API Gemini é necessária apenas para o Copa Assistant.
-> Sem ela, o resto da aplicação funciona normalmente.
-
----
-
-### 2. Frontend (b_frontend)
-
-Em outro terminal:
-
-```bash
+```powershell
 cd b_frontend
-npm install
-ng serve
+npm ci
+npm start
 ```
 
-O frontend sobe em **http://localhost:4200**
+Abra http://localhost:4200. O proxy encaminha `/api` para http://localhost:8080.
+Conta de demonstração local: `demo@brasilmarket.com` / `123456`.
 
-> O Angular já está configurado com proxy para o backend (`proxy.conf.json`),
-> então todas as chamadas `/api/*` são redirecionadas automaticamente para `localhost:8080`.
+O banco H2 é criado automaticamente em `c_backend/data/brasildrop.mv.db` quando a API é iniciada a partir de `c_backend/`.
+As migrations Flyway são aplicadas na inicialização. Não é necessário instalar um servidor de banco.
 
----
+## Configuração
 
-## Credenciais de demonstração
+`c_backend/.env.example` documenta as variáveis disponíveis. O Spring lê variáveis de ambiente; não carrega esse arquivo automaticamente.
 
-```
-E-mail:  demo@brasilmarket.com
-Senha:   123456
-```
+| Variável | Uso |
+|---|---|
+| `BRASILDROP_DB_URL` | URL JDBC H2; padrão `jdbc:h2:file:./data/brasildrop;DB_CLOSE_ON_EXIT=FALSE`. Use caminho absoluto em instalações permanentes. |
+| `BRASILDROP_DB_USER` | Usuário do banco; padrão local `sa`. |
+| `BRASILDROP_DB_PASSWORD` | Senha do banco; padrão local vazio. |
+| `GEMINI_API_KEY` | Opcional, necessária apenas para o Copa Assistant. |
 
----
+Não versione o banco nem credenciais. A conta demo permanece disponível para a demonstração deste projeto.
+Catálogo, carrinho, favoritos e sessões continuam em memória. Usuários e pedidos são persistidos; reiniciar a API exige novo login, mas mantém o histórico.
 
-## Tecnologias utilizadas
+## Comprovantes de compra
 
-### Backend
-- Java 21
-- Spring Boot 3 (Spring MVC, Spring Web)
-- API REST (JSON)
-- Google Gemini API (Copa Assistant com Google Search grounding)
-- ViaCEP API (validação de endereço no checkout)
+1. Entre, adicione produtos ao carrinho e finalize a compra informando um CEP válido.
+2. A confirmação abre `/pedidos/:code/confirmacao` e consulta o pedido salvo.
+3. Use **Imprimir comprovante** para imprimir em A4 ou salvar como PDF no navegador.
+4. Use **Meus pedidos**, no menu, para consultar e reimprimir compras anteriores.
+5. Atualizar a confirmação ou abrir seu endereço diretamente preserva o pedido. Se a sessão expirou, o login retorna ao comprovante.
 
-### Frontend
-- Angular 17
-- TypeScript
-- CSS (paleta verde/amarelo — identidade BrasilDrop)
-- Angular Router, HttpClient, FormsModule
+O comprovante contém código, data no horário de Brasília, comprador, produtos, quantidades, preços da compra, subtotais, total, pagamento, parcelas e endereço. Mostra **Documento não fiscal** e esclarece que a compra é simulada. Não há cobrança real, emissão de NF-e/NFC-e, desconto ou frete.
+A impressão oculta menu, assistente e botões. Os preços históricos não dependem do catálogo atual.
 
----
+## API
 
-## Endpoints da API
-
-| Método | Endpoint | Descrição |
+| Método | Rota | Uso |
 |---|---|---|
-| GET | `/api/products` | Lista produtos (params: `q`, `category`) |
-| GET | `/api/products/categories` | Lista categorias disponíveis |
-| GET | `/api/cart` | Itens do carrinho + total |
-| POST | `/api/cart/add` | Adiciona produto ao carrinho |
-| POST | `/api/cart/remove` | Remove produto do carrinho |
-| GET | `/api/wishlist` | Lista favoritos |
-| POST | `/api/wishlist/toggle` | Adiciona/remove dos favoritos |
-| GET | `/api/auth/me` | Usuário da sessão atual |
-| POST | `/api/auth/login` | Login |
-| POST | `/api/auth/register` | Cadastro |
-| POST | `/api/auth/logout` | Logout |
-| POST | `/api/checkout` | Finaliza pedido |
-| POST | `/api/copa-assistant/chat` | Pergunta ao Copa Assistant |
+| GET | `/api/products` | Catálogo, filtros `q` e `category` |
+| GET | `/api/products/categories` | Categorias |
+| GET | `/api/cart` | Itens e total |
+| POST | `/api/cart/add`, `/api/cart/remove` | Alterar carrinho |
+| GET | `/api/wishlist` | Favoritos |
+| POST | `/api/wishlist/toggle` | Alternar favorito |
+| GET | `/api/auth/me` | Sessão atual |
+| POST | `/api/auth/login`, `/register`, `/logout` | Autenticação (prefixo `/api/auth`) |
+| POST | `/api/checkout` | Salvar compra e limpar carrinho após commit |
+| GET | `/api/orders` | Histórico do comprador autenticado |
+| GET | `/api/orders/{code}` | Comprovante; 401 sem sessão, 403 outro comprador, 404 inexistente |
+| POST | `/api/copa-assistant/chat` | Assistente |
+
+As respostas de pedidos usam `Cache-Control: no-store` e não incluem senha ou e-mail interno de propriedade.
+
+## Verificações
+
+```powershell
+cd b_frontend
+npm test -- --watch=false --browsers=ChromeHeadless
+npm run build
+```
+
+```powershell
+cd c_backend
+mvn test
+mvn package
+```
+
+É necessário Chrome instalado para os testes Angular. Não há scripts de lint ou formatação configurados no projeto.
+Neste host, o atalho PowerShell global do npm rejeitou flags; foi usado `& 'C:/Program Files/nodejs/npm.cmd' test -- --watch=false --browsers=ChromeHeadless`.
+
+Consulte [integração e evidências](a_doc/merge-comprovantes.md) para decisões, cobertura, limites e backup.

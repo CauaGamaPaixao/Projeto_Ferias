@@ -1,0 +1,7 @@
+.orders-page { max-width: 960px; }
+.orders-list { list-style: none; padding: 0; display: grid; gap: 1rem; }
+.orders-list li { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 1.25rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+.order-code { font-family: monospace; overflow-wrap: anywhere; }
+.orders-list li > div { min-width: 0; }
+.orders-list p { color: var(--muted); margin-bottom: 0; }
+@media (max-width: 520px) { .orders-list li { align-items: start; flex-direction: column; } }

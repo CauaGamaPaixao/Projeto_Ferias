@@ -1,0 +1,25 @@
+<main class="content orders-page">
+  <h1>Meus pedidos</h1>
+  <p>Seu histórico de compras e comprovantes do Brasil Drop.</p>
+  <p *ngIf="loading" role="status">Carregando pedidos…</p>
+  <section *ngIf="error" role="alert" class="alert">
+    <p>{{ error }}</p>
+    <a *ngIf="unauthorized" routerLink="/login" [queryParams]="{ returnUrl: '/pedidos' }" class="primary link-button">Entrar na minha conta</a>
+    <button *ngIf="!unauthorized" type="button" (click)="load()">Tentar novamente</button>
+  </section>
+  <section *ngIf="!loading && !error && !orders.length" class="summary">
+    <h2>Você ainda não tem pedidos</h2>
+    <p>Depois da primeira compra, seu comprovante ficará disponível aqui.</p>
+    <a routerLink="/" class="primary link-button">Explorar produtos</a>
+  </section>
+  <ol class="orders-list" *ngIf="orders.length">
+    <li *ngFor="let order of orders">
+      <div>
+        <strong class="order-code">{{ order.code }}</strong>
+        <p>{{ date(order.createdAt) }} · {{ order.items.length }} produto(s)</p>
+      </div>
+      <strong>{{ money(order.total) }}</strong>
+      <a [routerLink]="['/pedidos', order.code, 'confirmacao']" class="primary link-button">Ver comprovante</a>
+    </li>
+  </ol>
+</main>

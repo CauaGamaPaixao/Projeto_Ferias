@@ -13,6 +13,8 @@ import { WishlistComponent } from './pages/wishlist/wishlist.component';
 import { CheckoutComponent } from './pages/checkout/checkout.component';
 import { AuthComponent } from './pages/auth/auth.component';
 import { OrderSuccessComponent } from './pages/order-success/order-success.component';
+import { OrdersComponent } from './pages/orders/orders.component';
+import { OrderReceiptComponent } from './components/order-receipt/order-receipt.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { OrderSuccessComponent } from './pages/order-success/order-success.compo
     CheckoutComponent,
     AuthComponent,
     OrderSuccessComponent,
+    OrdersComponent,
+    OrderReceiptComponent,
   ],
   imports: [BrowserModule, HttpClientModule, FormsModule, AppRoutingModule],
   bootstrap: [AppComponent]
